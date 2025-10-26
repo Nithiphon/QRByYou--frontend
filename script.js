@@ -1,6 +1,32 @@
-const BACKEND_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+// Backend URL - อัพเดท URL ของคุณที่นี่
+// เปลี่ยนเป็น false ถ้าต้องการใช้ Render เสมอ
+const USE_LOCAL_BACKEND = false;
+
+const BACKEND_BASE = (USE_LOCAL_BACKEND && (location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
   ? 'http://localhost:5000'
-  : 'https://qrcode-backend-2xh4.onrender.com';
+  : 'https://qrbyyou-backend.onrender.com';
+
+// Debug function เพื่อตรวจสอบ backend
+async function checkBackendStatus() {
+  try {
+    const res = await fetch(`${BACKEND_BASE}/health`);
+    if (res.ok) {
+      console.log('✅ Backend connected:', BACKEND_BASE);
+      return true;
+    } else {
+      console.error('❌ Backend error:', res.status);
+      return false;
+    }
+  } catch (error) {
+    console.error('❌ Backend connection failed:', error.message);
+    return false;
+  }
+}
+
+// Auto check on load (for debugging)
+if (typeof window !== 'undefined') {
+  checkBackendStatus();
+}
 
 let centerImageBase64 = null;
 
