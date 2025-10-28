@@ -3,68 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>สร้าง QR Code ฟรี • ปรับแต่งได้</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+  <title>QR Code Generator - สร้าง QR Code ฟรี</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="container">
-    <h1>📱 สร้าง QR Code ฟรี</h1>
-    <p class="subtitle">พิมพ์ลิงก์หรือข้อความ หรืออัปโหลดไฟล์ → ปรับแต่งสี → ดาวน์โหลดทันที!</p>
-
-    <div class="input-group">
-      <label for="text">ข้อความหรือลิงก์</label>
-      <input type="text" id="text" placeholder="เช่น https://www.example.com" />
+<body>+
+  <header class="site-header">
+    <div class="header-content">
+      <h1 class="brand">QR Code Generator</h1>
+      <p class="tag">ระบบสร้าง QR Code ออนไลน์ ฟรี ใช้งานง่าย สำหรับทุกคน</p>
     </div>
+  </header>
 
-    <div class="input-group">
-      <label>ปรับแต่งสี</label>
-      <div class="color-row">
-        <div class="color-item">
-          <label for="fg-color">สี QR</label>
-          <input type="color" id="fg-color" value="#000000">
+  <main class="container" role="main">
+    <nav class="tabs" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="text-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+        </svg>
+        สร้างจากข้อความ / ลิงก์
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="file-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+        </svg>
+        สร้างจากไฟล์ที่อัปโหลด
+      </button>
+    </nav>
+
+    <div class="content-area">
+      <!-- Tab 1: Text/URL QR -->
+      <section id="text-qr" class="tab-content active" aria-labelledby="text-title">
+        <div class="card">
+          <div class="step-indicator">ขั้นตอนที่ 1</div>
+          <h2 id="text-title" class="section-title">📝 กรอกข้อความหรือลิงก์</h2>
+          
+          <div class="input-group">
+            <label for="text">ข้อความหรือ URL ที่ต้องการสร้าง QR</label>
+            <input type="text" id="text" class="input-field" placeholder="เช่น https://www.example.com หรือ ข้อความใดๆ" aria-label="ข้อความหรือลิงก์" />
+          </div>
+
+          <div class="divider-section"></div>
+
+          <div class="step-indicator">ขั้นตอนที่ 2 (ปรับแต่งได้ตามต้องการ)</div>
+          <h3 class="subsection-title">🎨 ปรับแต่ง QR Code</h3>
+
+          <div class="settings-grid">
+            <div class="input-group">
+              <label for="fg-color">สี QR Code</label>
+              <div class="color-picker">
+                <input type="color" id="fg-color" value="#000000" aria-label="สี QR">
+                <span class="color-label">สีดำ</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="bg-color">สีพื้นหลัง</label>
+              <div class="color-picker">
+                <input type="color" id="bg-color" value="#ffffff" aria-label="สีพื้นหลัง">
+                <span class="color-label-bg">สีขาว</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="qr-size">ขนาด QR Code</label>
+            <div class="range-group">
+              <input type="range" id="qr-size" min="200" max="500" value="300"
+                     oninput="document.getElementById('size-value').textContent=this.value+'px'">
+              <span class="range-value" id="size-value">300px</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="center-image-file">เพิ่มโลโก้ตรงกลาง <span class="optional-badge">ไม่บังคับ</span></label>
+            <input type="file" id="center-image-file" class="file-input" accept="image/*" onchange="previewCenterImage()" aria-label="เพิ่มรูปภาพตรงกลาง">
+            <div id="center-image-preview" class="center-preview" hidden>
+              <img id="preview-img" alt="ตัวอย่างรูปกลาง QR">
+              <button type="button" class="btn-remove" onclick="removeCenterImage()">✕ ลบรูป</button>
+            </div>
+          </div>
+
+          <div class="divider-section"></div>
+
+          <div class="step-indicator">ขั้นตอนที่ 3</div>
+          <button id="generate-btn" class="btn btn-primary btn-large" onclick="generateQR()">
+            <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
+            </svg>
+            สร้าง QR Code
+          </button>
         </div>
-        <div class="color-item">
-          <label for="bg-color">สีพื้นหลัง</label>
-          <input type="color" id="bg-color" value="#ffffff">
+      </section>
+
+      <!-- Tab 2: File Upload QR -->
+      <section id="file-qr" class="tab-content" aria-labelledby="file-title">
+        <div class="card">
+          <div class="step-indicator">ขั้นตอนที่ 1</div>
+          <h2 id="file-title" class="section-title">📁 เลือกไฟล์ที่ต้องการอัปโหลด</h2>
+          <p class="help-text">ระบบจะอัปโหลดไฟล์ของคุณและสร้าง QR Code สำหรับดาวน์โหลด</p>
+
+          <div class="input-group">
+            <label for="file">เลือกไฟล์</label>
+            <input type="file" id="file" class="file-input" aria-label="เลือกไฟล์สำหรับอัปโหลด">
+            <div id="file-info" class="file-info" aria-live="polite"></div>
+          </div>
+
+          <div class="divider-section"></div>
+
+          <div class="step-indicator">ขั้นตอนที่ 2 (ปรับแต่งได้ตามต้องการ)</div>
+          <h3 class="subsection-title">🎨 ปรับแต่ง QR Code</h3>
+
+          <div class="settings-grid">
+            <div class="input-group">
+              <label for="fg-color-file">สี QR Code</label>
+              <div class="color-picker">
+                <input type="color" id="fg-color-file" value="#000000" aria-label="สี QR">
+                <span class="color-label-file">สีดำ</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="bg-color-file">สีพื้นหลัง</label>
+              <div class="color-picker">
+                <input type="color" id="bg-color-file" value="#ffffff" aria-label="สีพื้นหลัง">
+                <span class="color-label-file-bg">สีขาว</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="qr-size-file">ขนาด QR Code</label>
+            <div class="range-group">
+              <input type="range" id="qr-size-file" min="200" max="500" value="300"
+                     oninput="document.getElementById('size-value-file').textContent=this.value+'px'">
+              <span class="range-value" id="size-value-file">300px</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="center-image-file-2">เพิ่มโลโก้ตรงกลาง <span class="optional-badge">ไม่บังคับ</span></label>
+            <input type="file" id="center-image-file-2" class="file-input" accept="image/*" onchange="previewCenterImage2()" aria-label="เพิ่มรูปภาพตรงกลาง">
+            <div id="center-image-preview-2" class="center-preview" hidden>
+              <img id="preview-img-2" alt="ตัวอย่างรูปกลาง QR">
+              <button type="button" class="btn-remove" onclick="removeCenterImage2()">✕ ลบรูป</button>
+            </div>
+          </div>
+
+          <div class="divider-section"></div>
+
+          <div class="step-indicator">ขั้นตอนที่ 3</div>
+          <button id="upload-btn" class="btn btn-secondary btn-large" onclick="uploadAndGenerate()">
+            <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+            </svg>
+            อัปโหลดและสร้าง QR Code
+          </button>
         </div>
-      </div>
+      </section>
+
+      <!-- Preview Panel -->
+      <aside class="preview-panel" aria-live="polite">
+        <div class="preview-card">
+          <h3 class="preview-title">🎯 ผลลัพธ์</h3>
+          <div id="result">
+            <div class="empty-state">
+              <svg class="empty-icon" viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
+                <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
+              </svg>
+              <p>QR Code จะแสดงที่นี่</p>
+              <p class="empty-hint">กรอกข้อมูลแล้วกดปุ่มสร้าง</p>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
-
-    <div class="input-group">
-      <label for="qr-size">ขนาด QR Code</label>
-      <input type="range" id="qr-size" min="200" max="500" value="300" 
-             oninput="document.getElementById('size-value').textContent=this.value+'px'">
-      <div class="row">
-        <span class="muted" id="size-value">300px</span>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label for="center-image-file">เพิ่มรูปภาพตรงกลาง QR (Optional)</label>
-      <input type="file" id="center-image-file" accept="image/*" onchange="previewCenterImage()" />
-      <div id="center-image-preview" style="margin-top:10px;display:none;">
-        <img id="preview-img" style="max-width:100px;border-radius:50%;border:2px solid #ddd;">
-        <button onclick="removeCenterImage()" style="margin-left:10px;padding:8px 16px;background:#ff5252;color:#fff;border:none;border-radius:6px;cursor:pointer;">ลบรูป</button>
-      </div>
-    </div>
-
-    <button onclick="generateQR()">✨ สร้าง QR Code จากข้อความ/ลิงก์</button>
-
-    <div class="input-group" style="margin-top: 28px;padding-top:28px;border-top:2px solid #eee;">
-      <label style="font-size:18px;">📄 อัปโหลดไฟล์เพื่อสร้าง QR</label>
-      <input type="file" id="file" />
-      <div class="row">
-        <button style="max-width:260px" onclick="uploadAndGenerate()">📤 อัปโหลดและสร้าง QR</button>
-      </div>
-      <div id="file-info" class="muted" style="margin-top:8px;"></div>
-      <div style="margin-top:12px;font-size:13px;color:#666;">
-        💡 สามารถเลือกสีและเพิ่มรูปกลาง QR ได้ด้วยการใส่ค่าข้างบน
-      </div>
-    </div>
-
-    <div id="result"></div>
-  </div>
+  </main>
 
   <footer>
     &copy; 2025 • สร้างด้วย Python + Flask + HTML
@@ -73,5 +185,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
