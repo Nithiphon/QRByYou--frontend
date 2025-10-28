@@ -526,8 +526,9 @@ input[type="range"]::-moz-range-thumb:hover {
 
 /* Preview Panel */
 .preview-panel {
-  position: sticky;
-  top: var(--space-xl);
+  /* Removed sticky positioning so panel scrolls with the page on mobile */
+  position: static;
+  top: auto;
 }
 
 .preview-card {
