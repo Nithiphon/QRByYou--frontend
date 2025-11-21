@@ -3,174 +3,550 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>QR Code Generator - สร้าง QR Code ฟรี</title>
+  <title>QR Code Generator Pro - สร้าง QR Code ฟรี</title>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+:root {
+  --primary: #112D4E;
+  --primary-light: #3F72AF;
+  --secondary: #DBE2EF;
+  --background: #F9F7F7;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-light: #999999;
+  --border-color: #ddd;
+  --shadow-sm: rgba(17, 45, 78, 0.08);
+  --shadow-md: rgba(17, 45, 78, 0.12);
+  --shadow-lg: rgba(17, 45, 78, 0.16);
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Sarabun', system-ui, sans-serif;
+  background: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  padding: var(--space-xl) var(--space-md);
+  box-shadow: 0 4px 20px var(--shadow-md);
+  color: white;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.brand {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.tag {
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.status-badge.online { background: rgba(76, 175, 80, 0.3); }
+.status-badge.offline { background: rgba(244, 67, 54, 0.3); }
+
+.container {
+  max-width: 1200px;
+  margin: var(--space-xl) auto;
+  padding: 0 var(--space-md);
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  background: white;
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 12px var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.tab {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab:hover:not(.active) {
+  background: var(--secondary);
+  color: var(--primary);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.tab-icon { width: 20px; height: 20px; }
+
+.content-area {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .content-area { grid-template-columns: 1fr; }
+  .preview-panel { order: -1; }
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: 0 4px 20px var(--shadow-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.section-title {
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+.help-text {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-bottom: var(--space-lg);
+}
+
+.input-group {
+  margin-bottom: var(--space-lg);
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(63, 114, 175, 0.1);
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+  background: var(--background);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+}
+
+input[type="color"] {
+  width: 50px;
+  height: 50px;
+  border: 3px solid white;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.range-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--background);
+  border-radius: var(--radius-md);
+}
+
+input[type="range"] {
+  flex: 1;
+  height: 8px;
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+.file-input {
+  display: block;
+  width: 100%;
+  padding: var(--space-md);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--background);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-input:hover {
+  border-color: var(--primary-light);
+  background: white;
+}
+
+.file-info {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--secondary);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.btn-large {
+  width: 100%;
+  padding: 18px;
+  font-size: 18px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  box-shadow: 0 4px 16px var(--shadow-md);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow-lg);
+}
+
+.btn-primary:disabled {
+  background: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.preview-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: 0 4px 20px var(--shadow-sm);
+  position: sticky;
+  top: var(--space-lg);
+}
+
+.preview-title {
+  color: var(--primary);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--text-secondary);
+}
+
+.qr-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.qr-result img {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px var(--shadow-md);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--background);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+}
+
+.history-item:hover {
+  background: var(--secondary);
+}
+
+.batch-input {
+  min-height: 150px;
+  resize: vertical;
+}
+
+footer {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+  margin-top: var(--space-2xl);
+  background: white;
+  border-top: 1px solid var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .settings-grid { grid-template-columns: 1fr; }
+  .tabs { flex-direction: column; }
+}
+  </style>
 </head>
-<body>+
+<body>
   <header class="site-header">
     <div class="header-content">
-      <h1 class="brand">QR Code Generator</h1>
-      <p class="tag">ระบบสร้าง QR Code ออนไลน์ ฟรี ใช้งานง่าย สำหรับทุกคน</p>
+      <h1 class="brand">🎯 QR Code Generator Pro</h1>
+      <p class="tag">ระบบสร้าง QR Code ที่ทันสมัย รองรับทุกประเภทไฟล์ รวม PDF</p>
+      <div id="status-badge" class="status-badge">🔄 กำลังตรวจสอบ...</div>
     </div>
   </header>
 
-  <main class="container" role="main">
-    <nav class="tabs" role="tablist">
-      <button class="tab active" role="tab" aria-selected="true" aria-controls="text-qr">
-        <svg class="tab-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+  <main class="container">
+    <nav class="tabs">
+      <button class="tab active" data-tab="text-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"/>
         </svg>
-        สร้างจากข้อความ / ลิงก์
+        ข้อความ/ลิงก์
       </button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="file-qr">
-        <svg class="tab-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <button class="tab" data-tab="file-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
           <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
         </svg>
-        สร้างจากไฟล์ที่อัปโหลด
+        อัปโหลดไฟล์
+      </button>
+      <button class="tab" data-tab="scan-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13zm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5H19V16h-1.5v-1.5zm0 3H19V19h-1.5v-1.5zM22 7h-2V4h-3V2h5v5zm0 15v-5h-2v3h-3v2h5zM2 22h5v-2H4v-3H2v5zM2 2v5h2V4h3V2H2z"/>
+        </svg>
+        สแกน QR
+      </button>
+      <button class="tab" data-tab="batch-qr">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+        </svg>
+        สร้างหลายรายการ
       </button>
     </nav>
 
     <div class="content-area">
-      <!-- Tab 1: Text/URL QR -->
-      <section id="text-qr" class="tab-content active" aria-labelledby="text-title">
-        <div class="card">
-          <div class="step-indicator">ขั้นตอนที่ 1</div>
-          <h2 id="text-title" class="section-title">📝 กรอกข้อความหรือลิงก์</h2>
-          
-          <div class="input-group">
-            <label for="text">ข้อความหรือ URL ที่ต้องการสร้าง QR</label>
-            <input type="text" id="text" class="input-field" placeholder="เช่น https://www.example.com หรือ ข้อความใดๆ" aria-label="ข้อความหรือลิงก์" />
-          </div>
-
-          <div class="divider-section"></div>
-
-          <div class="step-indicator">ขั้นตอนที่ 2 (ปรับแต่งได้ตามต้องการ)</div>
-          <h3 class="subsection-title">🎨 ปรับแต่ง QR Code</h3>
-
-          <div class="settings-grid">
+      <!-- Tab 1: Text/URL -->
+      <div>
+        <section id="text-qr" class="tab-content active">
+          <div class="card">
+            <h2 class="section-title">📝 สร้างจากข้อความหรือลิงก์</h2>
             <div class="input-group">
-              <label for="fg-color">สี QR Code</label>
-              <div class="color-picker">
-                <input type="color" id="fg-color" value="#000000" aria-label="สี QR">
-                <span class="color-label">สีดำ</span>
+              <label for="text">ข้อความหรือ URL</label>
+              <input type="text" id="text" class="input-field" placeholder="https://example.com หรือข้อความใดๆ" />
+            </div>
+            
+            <div class="settings-grid">
+              <div class="input-group">
+                <label for="fg-color">สี QR Code</label>
+                <div class="color-picker">
+                  <input type="color" id="fg-color" value="#000000">
+                  <span id="fg-label">สีดำ</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="bg-color">สีพื้นหลัง</label>
+                <div class="color-picker">
+                  <input type="color" id="bg-color" value="#ffffff">
+                  <span id="bg-label">สีขาว</span>
+                </div>
               </div>
             </div>
+
             <div class="input-group">
-              <label for="bg-color">สีพื้นหลัง</label>
-              <div class="color-picker">
-                <input type="color" id="bg-color" value="#ffffff" aria-label="สีพื้นหลัง">
-                <span class="color-label-bg">สีขาว</span>
+              <label for="qr-size">ขนาด</label>
+              <div class="range-group">
+                <input type="range" id="qr-size" min="200" max="500" value="300">
+                <span id="size-value">300px</span>
               </div>
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="qr-size">ขนาด QR Code</label>
-            <div class="range-group">
-              <input type="range" id="qr-size" min="200" max="500" value="300"
-                     oninput="document.getElementById('size-value').textContent=this.value+'px'">
-              <span class="range-value" id="size-value">300px</span>
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label for="center-image-file">เพิ่มโลโก้ตรงกลาง <span class="optional-badge">ไม่บังคับ</span></label>
-            <input type="file" id="center-image-file" class="file-input" accept="image/*" onchange="previewCenterImage()" aria-label="เพิ่มรูปภาพตรงกลาง">
-            <div id="center-image-preview" class="center-preview" hidden>
-              <img id="preview-img" alt="ตัวอย่างรูปกลาง QR">
-              <button type="button" class="btn-remove" onclick="removeCenterImage()">✕ ลบรูป</button>
-            </div>
-          </div>
-
-          <div class="divider-section"></div>
-
-          <div class="step-indicator">ขั้นตอนที่ 3</div>
-          <button id="generate-btn" class="btn btn-primary btn-large" onclick="generateQR()">
-            <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-              <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
-            </svg>
-            สร้าง QR Code
-          </button>
-        </div>
-      </section>
-
-      <!-- Tab 2: File Upload QR -->
-      <section id="file-qr" class="tab-content" aria-labelledby="file-title">
-        <div class="card">
-          <div class="step-indicator">ขั้นตอนที่ 1</div>
-          <h2 id="file-title" class="section-title">📁 เลือกไฟล์ที่ต้องการอัปโหลด</h2>
-          <p class="help-text">ระบบจะอัปโหลดไฟล์ของคุณและสร้าง QR Code สำหรับดาวน์โหลด</p>
-
-          <div class="input-group">
-            <label for="file">เลือกไฟล์</label>
-            <input type="file" id="file" class="file-input" aria-label="เลือกไฟล์สำหรับอัปโหลด">
-            <div id="file-info" class="file-info" aria-live="polite"></div>
-          </div>
-
-          <div class="divider-section"></div>
-
-          <div class="step-indicator">ขั้นตอนที่ 2 (ปรับแต่งได้ตามต้องการ)</div>
-          <h3 class="subsection-title">🎨 ปรับแต่ง QR Code</h3>
-
-          <div class="settings-grid">
             <div class="input-group">
-              <label for="fg-color-file">สี QR Code</label>
-              <div class="color-picker">
-                <input type="color" id="fg-color-file" value="#000000" aria-label="สี QR">
-                <span class="color-label-file">สีดำ</span>
+              <label for="center-image">โลโก้ตรงกลาง (ไม่บังคับ)</label>
+              <input type="file" id="center-image" class="file-input" accept="image/*">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="generateQR()">สร้าง QR Code</button>
+          </div>
+        </section>
+
+        <!-- Tab 2: File Upload -->
+        <section id="file-qr" class="tab-content">
+          <div class="card">
+            <h2 class="section-title">📁 สร้างจากไฟล์</h2>
+            <p class="help-text">รองรับ PDF, Word, Excel, PowerPoint, รูปภาพ, วิดีโอ และไฟล์อื่นๆ (สูงสุด 50MB)</p>
+            
+            <div class="input-group">
+              <label for="file">เลือกไฟล์</label>
+              <input type="file" id="file" class="file-input">
+              <div id="file-info" class="file-info" style="display:none;"></div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="input-group">
+                <label for="fg-color-file">สี QR Code</label>
+                <div class="color-picker">
+                  <input type="color" id="fg-color-file" value="#000000">
+                  <span id="fg-label-file">สีดำ</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="bg-color-file">สีพื้นหลัง</label>
+                <div class="color-picker">
+                  <input type="color" id="bg-color-file" value="#ffffff">
+                  <span id="bg-label-file">สีขาว</span>
+                </div>
               </div>
             </div>
+
             <div class="input-group">
-              <label for="bg-color-file">สีพื้นหลัง</label>
-              <div class="color-picker">
-                <input type="color" id="bg-color-file" value="#ffffff" aria-label="สีพื้นหลัง">
-                <span class="color-label-file-bg">สีขาว</span>
+              <label for="qr-size-file">ขนาด</label>
+              <div class="range-group">
+                <input type="range" id="qr-size-file" min="200" max="500" value="300">
+                <span id="size-value-file">300px</span>
               </div>
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="qr-size-file">ขนาด QR Code</label>
-            <div class="range-group">
-              <input type="range" id="qr-size-file" min="200" max="500" value="300"
-                     oninput="document.getElementById('size-value-file').textContent=this.value+'px'">
-              <span class="range-value" id="size-value-file">300px</span>
+            <div class="input-group">
+              <label for="center-image-file">โลโก้ตรงกลาง (ไม่บังคับ)</label>
+              <input type="file" id="center-image-file" class="file-input" accept="image/*">
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="center-image-file-2">เพิ่มโลโก้ตรงกลาง <span class="optional-badge">ไม่บังคับ</span></label>
-            <input type="file" id="center-image-file-2" class="file-input" accept="image/*" onchange="previewCenterImage2()" aria-label="เพิ่มรูปภาพตรงกลาง">
-            <div id="center-image-preview-2" class="center-preview" hidden>
-              <img id="preview-img-2" alt="ตัวอย่างรูปกลาง QR">
-              <button type="button" class="btn-remove" onclick="removeCenterImage2()">✕ ลบรูป</button>
+            <button class="btn btn-primary btn-large" onclick="uploadAndGenerate()">อัปโหลดและสร้าง QR</button>
+          </div>
+        </section>
+
+        <!-- Tab 3: Scan QR -->
+        <section id="scan-qr" class="tab-content">
+          <div class="card">
+            <h2 class="section-title">📷 สแกน QR Code</h2>
+            <p class="help-text">อัปโหลดรูป QR Code เพื่ออ่านข้อมูล</p>
+            
+            <div class="input-group">
+              <label for="scan-image">เลือกรูปภาพ QR Code</label>
+              <input type="file" id="scan-image" class="file-input" accept="image/*">
             </div>
+
+            <button class="btn btn-primary btn-large" onclick="scanQR()">สแกน QR Code</button>
+
+            <div id="scan-result" style="margin-top: 20px;"></div>
           </div>
+        </section>
 
-          <div class="divider-section"></div>
+        <!-- Tab 4: Batch -->
+        <section id="batch-qr" class="tab-content">
+          <div class="card">
+            <h2 class="section-title">📋 สร้างหลายรายการพร้อมกัน</h2>
+            <p class="help-text">ใส่ข้อมูลแต่ละบรรทัดเพื่อสร้าง QR Code หลายอัน</p>
+            
+            <div class="input-group">
+              <label for="batch-text">ข้อมูล (แยกด้วยบรรทัดใหม่)</label>
+              <textarea id="batch-text" class="input-field batch-input" placeholder="https://example.com/product1
+https://example.com/product2
+https://example.com/product3"></textarea>
+            </div>
 
-          <div class="step-indicator">ขั้นตอนที่ 3</div>
-          <button id="upload-btn" class="btn btn-secondary btn-large" onclick="uploadAndGenerate()">
-            <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-              <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
-            </svg>
-            อัปโหลดและสร้าง QR Code
-          </button>
-        </div>
-      </section>
+            <button class="btn btn-primary btn-large" onclick="generateBatch()">สร้างทั้งหมด</button>
+          </div>
+        </section>
+      </div>
 
       <!-- Preview Panel -->
-      <aside class="preview-panel" aria-live="polite">
+      <aside class="preview-panel">
         <div class="preview-card">
           <h3 class="preview-title">🎯 ผลลัพธ์</h3>
           <div id="result">
             <div class="empty-state">
-              <svg class="empty-icon" viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
-                <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
-              </svg>
               <p>QR Code จะแสดงที่นี่</p>
-              <p class="empty-hint">กรอกข้อมูลแล้วกดปุ่มสร้าง</p>
             </div>
           </div>
         </div>
@@ -179,9 +555,313 @@
   </main>
 
   <footer>
-    &copy; 2025 • สร้างด้วย Python + Flask + HTML
+    &copy; 2025 • QR Code Generator Pro • Made with ❤️
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+const BACKEND_URL = 'https://qrbyyou-backend-2.onrender.com';
+let centerImageBase64 = null;
+let centerImageBase64File = null;
+
+// ตรวจสอบสถานะ Backend
+async function checkStatus() {
+  const badge = document.getElementById('status-badge');
+  try {
+    const res = await fetch(`${BACKEND_URL}/health`);
+    if (res.ok) {
+      badge.textContent = '✅ เชื่อมต่อสำเร็จ';
+      badge.className = 'status-badge online';
+    } else {
+      throw new Error('Connection failed');
+    }
+  } catch (e) {
+    badge.textContent = '❌ ไม่สามารถเชื่อมต่อ Backend';
+    badge.className = 'status-badge offline';
+  }
+}
+
+// Setup tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Setup color pickers
+function setupColorPicker(colorId, labelId) {
+  const input = document.getElementById(colorId);
+  const label = document.getElementById(labelId);
+  input.addEventListener('change', (e) => {
+    const colors = {
+      '#000000': 'สีดำ', '#ffffff': 'สีขาว', '#ff0000': 'สีแดง',
+      '#00ff00': 'สีเขียว', '#0000ff': 'สีน้ำเงิน'
+    };
+    label.textContent = colors[e.target.value] || e.target.value;
+  });
+}
+
+setupColorPicker('fg-color', 'fg-label');
+setupColorPicker('bg-color', 'bg-label');
+setupColorPicker('fg-color-file', 'fg-label-file');
+setupColorPicker('bg-color-file', 'bg-label-file');
+
+// Setup range sliders
+document.getElementById('qr-size').oninput = (e) => {
+  document.getElementById('size-value').textContent = e.target.value + 'px';
+};
+document.getElementById('qr-size-file').oninput = (e) => {
+  document.getElementById('size-value-file').textContent = e.target.value + 'px';
+};
+
+// Setup center images
+document.getElementById('center-image').onchange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (ev) => { centerImageBase64 = ev.target.result; };
+    reader.readAsDataURL(file);
+  }
+};
+
+document.getElementById('center-image-file').onchange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (ev) => { centerImageBase64File = ev.target.result; };
+    reader.readAsDataURL(file);
+  }
+};
+
+// Generate QR from text
+async function generateQR() {
+  const text = document.getElementById('text').value.trim();
+  if (!text) return alert('กรุณากรอกข้อความ');
+
+  const result = document.getElementById('result');
+  result.innerHTML = '<p>⏳ กำลังสร้าง...</p>';
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        fg: document.getElementById('fg-color').value,
+        bg: document.getElementById('bg-color').value,
+        size: parseInt(document.getElementById('qr-size').value),
+        center_image: centerImageBase64
+      })
+    });
+
+    if (res.ok) {
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      result.innerHTML = `
+        <div class="qr-result">
+          <img src="${url}" alt="QR Code">
+          <button class="btn btn-primary" onclick="downloadQR('${url}', 'qrcode')">ดาวน์โหลด</button>
+        </div>
+      `;
+      saveHistory('text', text);
+    } else {
+      const err = await res.json();
+      alert('Error: ' + err.error);
+    }
+  } catch (e) {
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+  }
+}
+
+// Upload and generate QR
+async function uploadAndGenerate() {
+  const fileInput = document.getElementById('file');
+  const file = fileInput.files[0];
+  if (!file) return alert('กรุณาเลือกไฟล์');
+
+  const result = document.getElementById('result');
+  const info = document.getElementById('file-info');
+  info.style.display = 'block';
+  info.textContent = '⏳ กำลังอัปโหลด...';
+  result.innerHTML = '<p>⏳ กำลังดำเนินการ...</p>';
+
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+
+    const uploadRes = await fetch(`${BACKEND_URL}/upload`, {
+      method: 'POST',
+      body: fd
+    });
+
+    const uploadData = await uploadRes.json();
+    if (!uploadRes.ok) throw new Error(uploadData.error);
+
+    const fileUrl = BACKEND_URL + uploadData.url;
+    info.textContent = '✅ อัปโหลดสำเร็จ: ' + uploadData.filename;
+
+    const qrRes = await fetch(`${BACKEND_URL}/generate-file-qr`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        file_url: fileUrl,
+        fg: document.getElementById('fg-color-file').value,
+        bg: document.getElementById('bg-color-file').value,
+        size: parseInt(document.getElementById('qr-size-file').value),
+        center_image: centerImageBase64File
+      })
+    });
+
+    if (qrRes.ok) {
+      const blob = await qrRes.blob();
+      const url = URL.createObjectURL(blob);
+      result.innerHTML = `
+        <div class="qr-result">
+          <img src="${url}" alt="QR Code">
+          <button class="btn btn-primary" onclick="downloadQR('${url}', 'qrcode-file')">ดาวน์โหลด</button>
+          <button class="btn btn-primary" onclick="copyText('${fileUrl}')">คัดลอกลิงก์</button>
+        </div>
+      `;
+      saveHistory('file', uploadData.filename);
+    }
+  } catch (e) {
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+    info.textContent = '';
+  }
+}
+
+// Scan QR Code
+async function scanQR() {
+  const fileInput = document.getElementById('scan-image');
+  const file = fileInput.files[0];
+  if (!file) return alert('กรุณาเลือกรูปภาพ');
+
+  const result = document.getElementById('scan-result');
+  result.innerHTML = '<p>⏳ กำลังสแกน...</p>';
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/scan-qr`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: e.target.result })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          result.innerHTML = data.results.map(r => `
+            <div style="padding: 15px; background: #e8f5e9; border-radius: 8px; margin-top: 10px;">
+              <strong>ประเภท:</strong> ${r.type}<br>
+              <strong>ข้อมูล:</strong> ${r.data}
+            </div>
+          `).join('');
+        } else {
+          result.innerHTML = '<p>❌ ไม่พบ QR Code ในรูปภาพ</p>';
+        }
+      } else {
+        const err = await res.json();
+        result.innerHTML = '<p>❌ ' + err.error + '</p>';
+      }
+    } catch (e) {
+      result.innerHTML = '<p>❌ เกิดข้อผิดพลาด: ' + e.message + '</p>';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// Generate batch QR codes
+async function generateBatch() {
+  const text = document.getElementById('batch-text').value.trim();
+  if (!text) return alert('กรุณากรอกข้อมูล');
+
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length === 0) return alert('ไม่พบข้อมูล');
+
+  const result = document.getElementById('result');
+  result.innerHTML = '<p>⏳ กำลังสร้าง ' + lines.length + ' QR Codes...</p>';
+
+  const qrCodes = [];
+  for (let i = 0; i < lines.length; i++) {
+    try {
+      const res = await fetch(`${BACKEND_URL}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: lines[i],
+          fg: '#000000',
+          bg: '#ffffff',
+          size: 300
+        })
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        qrCodes.push({ text: lines[i], url });
+      }
+    } catch (e) {
+      console.error('Error generating QR for:', lines[i], e);
+    }
+  }
+
+  result.innerHTML = `
+    <div style="max-height: 500px; overflow-y: auto;">
+      ${qrCodes.map((qr, i) => `
+        <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; margin-bottom: 10px;">
+          <p style="font-size: 14px; margin-bottom: 10px;"><strong>#${i + 1}:</strong> ${qr.text}</p>
+          <img src="${qr.url}" style="width: 150px; border-radius: 8px;">
+          <button class="btn btn-primary" style="margin-top: 10px; font-size: 14px;" onclick="downloadQR('${qr.url}', 'qrcode-${i + 1}')">ดาวน์โหลด</button>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// Download QR Code
+function downloadQR(url, filename) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename + '.png';
+  a.click();
+}
+
+// Copy text to clipboard
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert('✅ คัดลอกลิงก์แล้ว');
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ คัดลอกลิงก์แล้ว');
+  }
+}
+
+// Save to history
+function saveHistory(type, data) {
+  try {
+    const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+    history.unshift({
+      type,
+      data,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('qr_history', JSON.stringify(history.slice(0, 50)));
+  } catch (e) {
+    console.error('Cannot save history:', e);
+  }
+}
+
+// Initialize
+checkStatus();
+  </script>
 </body>
 </html>
